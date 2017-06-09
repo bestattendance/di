@@ -97,4 +97,13 @@ class App
         $response->send();
     }
 
+    /**
+     * Get the IOC container
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this->_container;
+    }
+
 }
