@@ -69,6 +69,15 @@ class App
         $this->_container['FormSubmissionModel'] = $this->_container->factory(function($c) {
             return new FormSubmission($c['pdo']);
         });
+
+        // Return a new instance of SwiftMail, pre-configured with a configurable transport.  I'll use the
+        // NullTransport for this application, since I'm not sure what options will be available in the
+        // test environment.
+        $this->_container['SwiftMailer'] = $this->_container->factory(function($c) {
+            // Create the Transport; using null for now to be swapped out with an actual implementation later.
+            $transport = (new \Swift_NullTransport());
+            return new \Swift_Mailer($transport);
+        });
     }
 
     /**

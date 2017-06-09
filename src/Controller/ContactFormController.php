@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ContactForm\Model\FormSubmission\FormSubmission;
 use ContactForm\Model\Exception\RequiredFieldMissingException;
+use ContactForm\Service\EmailFormSubmissionService;
 
 /**
  * Handles HTTP requests to the contact form page.
@@ -43,25 +44,47 @@ class ContactFormController extends AppControllerAbstract
                 // Persist the submission to the database
                 $formSubmission->save();
 
-                // TODO: Email the submission
-                
+                // Email the submission
+                // If more robustness were needed, this would be triggered via an event lister and put into a queue,
+                // with error logs for failed emails.
+                $emailFormSubmissionService = new EmailFormSubmissionService($this->_container['SwiftMailer']);
+                $emailFormSubmissionService->sendEmailNotice(
+                    $formSubmission,
+                    $this->_container['config']->admin_email,
+                    $this->_container['config']->admin_name
+                );
 
-                // TODO: Redirect to a thank-you page
+                // Display a thank-you page
                 // Most of the time I would use a session flash message for these types of notifications.
-
+                // (Also, if there was a proper router, I would use a redirect instead of forwarding to a different controller).
+                // To increase maintainability, the common parts of the view would be factored out into a Twig layout, from which
+                // each Twig template would inherit.
+                return $this->_thankYou();
 
             } catch (RequiredFieldMissingException $e) {
                 $formErrors = $formSubmission->getErrors();
+
+                // A production application would require additional error handling and logging.
             }
         }
 
 
-        // Twig will automatically escape output to prevent cross site scriptint attacks.
+        // Twig will automatically escape output to prevent cross site scripting attacks.
         // CSRF is not a concern, as there is no authenticated session.
+
         /** @var $this->_container['twig'] Twig_Environment */
         return new Response($this->_container['twig']->render('/ContactForm/contact.twig', [
             'formSubmission' => $formSubmission,
             'formErrors' => $formErrors
         ]));
+    }
+
+    /**
+     * Displays a thank you page
+     * @return Response
+     */
+    protected function _thankYou()
+    {
+        return new Response($this->_container['twig']->render('/ContactForm/thank-you.twig', []));
     }
 }
