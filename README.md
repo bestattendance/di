@@ -1,3 +1,53 @@
+# Installation Instructions
+
+## System Requirements
+*(I usually use Vagrant with Puppet for running and configuring development environments)*
+- PHP version **7.0** or higher installed and running
+- MySQL version 5.5 or higher installed and running on localhost listening on the default MySQL port 3306
+- [Composer](https://getcomposer.org/) is **installed globally**
+- PHP has mbstring, openssl, pdo, dom, and intl extensions loaded and enabled.
+- MySQL PDO driver is installed and enabled.
+
+## INSTALLATION INSTRUCTIONS:
+*(I usually use phing to automate builds and database migrations to manage schemas, but wanted to break this out for you to see how I build my projects manually)*
+
+### Create the following database and user:
+```
+CREATE USER 'contactform'@'localhost' IDENTIFIED BY 'contactform';
+CREATE DATABASE `contactform`;
+GRANT ALL PRIVILEGES ON contactform.* TO 'contactform'@'localhost';
+```
+
+
+### Create the following database:
+
+```
+USE contactform;
+CREATE TABLE IF NOT EXISTS `form_submissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(255) NOT NULL,
+  `email` varchar(1024) NOT NULL,
+  `message` text NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+### Install the application
+- Clone the public git repository into a clean directory: `git clone git@github.com:bestattendance/dealerinspire.git .`
+- Install dependencies: `composer install`
+
+
+
+
+
+
+
+
+
+
+
+
 # Dealer Inspire PHP Code Challenge
 
 Welcome to the Dealer Inspire PHP Code challenge. 
