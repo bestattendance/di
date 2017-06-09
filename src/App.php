@@ -8,7 +8,7 @@ use Pimple\Container;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Zend\Config\Config;
-
+use ContactForm\Model\FormSubmission\FormSubmission;
 
 /**
  * Runs the model-view-controller application.  Assumes that there is one and only one route, which is for
@@ -67,7 +67,7 @@ class App
 
         // Using a full featured framework, there would be a much better way of instantiating model objects.
         $this->_container['FormSubmissionModel'] = $this->_container->factory(function($c) {
-
+            return new FormSubmission($c['pdo']);
         });
     }
 

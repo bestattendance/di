@@ -115,7 +115,33 @@
         <div class="col-lg-8 col-lg-offset-2">
             <h2>Contact Guy Smiley</h2>
             <p>Remember Guy Smiley?  Yeah, he wants to hear from you.</p>
-            
+
+            {% for formError in formErrors %}
+                <div class="row bg-warning text-danger">{{ formError }}</div>
+            {% endfor %}
+            <form method="post">
+                <div class="form-group row">
+                    <div class="row">
+                        <label for="full-name">Full Name</label>
+                        <input class="form-control" type="text" id="full-name" name="full_name" value="{{ formSubmission.getFullName() }}">
+                    </div>
+                    <div class="form-group row">
+                        <label for="email">Email</label>
+                        <input class="form-control" type="text" id="email" name="email" value="{{ formSubmission.getEmail() }}" required>
+                    </div>
+                    <div class="form-group row">
+                        <label for="message">Message</label>
+                        <input class="form-control" type="text" id="message" name="message" value="{{ formSubmission.getMessage() }}" required>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phone">Phone</label>
+                        <input class="form-control" type="text" id="phone" name="phone" value="{{ formSubmission.getPhone() }}">
+                    </div>
+                    <div class="form-group row">
+                        <input class="btn btn-primary btn-lg" type="submit" value="Submit">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </section>
