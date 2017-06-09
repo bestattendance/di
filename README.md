@@ -1,5 +1,9 @@
 # Installation Instructions
 
+## First: An Important Note about PHPUnit
+PHPUnit is installed locally with Composer for this project.  If running `phpunit` from the command line results in
+ "No Tests Executed", try running it from the vendor directory thusly: `./vendor/bin/phpunit`.
+
 ## System Requirements
 *(I usually use Vagrant with Puppet for running and configuring development environments)*
 - PHP version **7.0** or higher installed and running
@@ -36,11 +40,6 @@ CREATE TABLE IF NOT EXISTS `form_submissions` (
 ### Install the application
 - Clone the public git repository into a clean directory: `git clone git@github.com:bestattendance/di.git .`
 - Install dependencies: `composer install`
-
-
-## Important Note about PHPUnit
-PHPUnit is installed locally with Composer for this project.  If running `phpunit` from the command line results in
- "No Tests Executed", try running it from the vendor directory thusly: `./vendor/bin/phpunit`.
 
 
 
