@@ -14,6 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 class ContactFormController extends AppControllerAbstract
 {
 
+    /**
+     * Allows users to submit contact forms.
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function showContactFormAction(Request $request)
     {
         /** @var $this->_container['twig'] Twig_Environment */

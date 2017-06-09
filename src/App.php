@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Pimple\Container;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
+use Zend\Config\Config;
+
 
 /**
  * Runs the model-view-controller application.  Assumes that there is one and only one route, which is for
@@ -37,12 +39,36 @@ class App
     {
         $this->_container = new Container();
 
-        // Create a Twig service provider
+        // Return a shared instance of a Twig_Environment
         $this->_container['twig'] = function($c) {
             $loader = new Twig_Loader_Filesystem(__DIR__ . '/View');
-            $twig = new Twig_Environment($loader);
-            return $twig;
+            return new Twig_Environment($loader);
         };
+
+        // Return a shared instance of the Zend Config component
+        // Application configurations are in /src/config.php
+        $this->_container['config'] = function($c) {
+            return new Config(include 'config.php');
+        };
+
+        // Return a shared instance of PDO.
+        // I usually use a DBAL and sometimes an ORM on top of PDO, but for this project,
+        // I will use PDO directly.
+        $this->_container['pdo'] = function($c) {
+            $dsn = 'mysql:dbname=' . $c['config']->db_name . ';host=' . $c['config']->db_host;
+
+            try {
+                $pdo = new \PDO($dsn, $c['config']->db_username, $c['config']->db_password);
+            } catch (\PDOException $e) {
+                echo 'Connection failed: ' . $e->getMessage();
+            }
+            return $pdo;
+        };
+
+        // Using a full featured framework, there would be a much better way of instantiating model objects.
+        $this->_container['FormSubmissionModel'] = $this->_container->factory(function($c) {
+
+        });
     }
 
     /**

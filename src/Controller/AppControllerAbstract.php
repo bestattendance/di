@@ -22,7 +22,6 @@ abstract class AppControllerAbstract
      * Inject dependencies and initialize the object.
      *
      * @param Container $container
-     * @return void
      */
     public function __construct(Container $container)
     {
