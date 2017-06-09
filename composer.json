@@ -1,0 +1,25 @@
+{
+    "name": "bestattendance/dealerinspire",
+    "description": "Dealer Inspire Code Challenge",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Joel Roggenkamp",
+            "email": "mail@bestattendance.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^3.3",
+        "pimple/pimple": "^3.0",
+        "twig/twig": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "ContactForm\\": "src/"
+        }
+    }
+}
