@@ -57,9 +57,7 @@ class FormSubmission extends AppModelAbstract
      ******************************************************************************************************************/
 
     /**
-     * Validates, saves, and emails the form submission.
-     * In a more complex application, the save action would be handled by a Data Mapper, and the email would perhaps
-     * be sent into a queue or picked up by an event listener.
+     * Validates, and saves the form submission.
      *
      * @return void
      * @throws RequiredFieldMissingException
@@ -68,7 +66,18 @@ class FormSubmission extends AppModelAbstract
     {
         $this->_assertValid();
 
-        echo 'ok';die;
+        // Usually I use a higher level abstraction like a DBAL or ORM for data management.  For this project,
+        // PDO is sufficient.
+        $sql = "INSERT INTO form_submissions (full_name, email, message, phone) VALUES "
+             . "(:fullName, :email, :message, :phone)";
+        $stmt = $this->_pdo->prepare($sql);
+
+        // Bind parameters to prevent SQL injection
+        $stmt->bindValue(':fullName', $this->_fullName, \PDO::PARAM_STR);
+        $stmt->bindValue(':email', $this->_email, \PDO::PARAM_STR);
+        $stmt->bindValue(':message', $this->_message, \PDO::PARAM_STR);
+        $stmt->bindValue(':phone', $this->_phone, \PDO::PARAM_STR);
+        $stmt->execute();
     }
 
     /**

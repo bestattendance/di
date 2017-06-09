@@ -39,7 +39,16 @@ class ContactFormController extends AppControllerAbstract
                 ->setPhone($request->get('phone'));
 
             try {
+
+                // Persist the submission to the database
                 $formSubmission->save();
+
+                // TODO: Email the submission
+                
+
+                // TODO: Redirect to a thank-you page
+                // Most of the time I would use a session flash message for these types of notifications.
+
 
             } catch (RequiredFieldMissingException $e) {
                 $formErrors = $formSubmission->getErrors();
@@ -47,6 +56,8 @@ class ContactFormController extends AppControllerAbstract
         }
 
 
+        // Twig will automatically escape output to prevent cross site scriptint attacks.
+        // CSRF is not a concern, as there is no authenticated session.
         /** @var $this->_container['twig'] Twig_Environment */
         return new Response($this->_container['twig']->render('/ContactForm/contact.twig', [
             'formSubmission' => $formSubmission,
